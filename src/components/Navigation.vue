@@ -8,7 +8,7 @@
 
 <script>
 export default {
-  name: "navigation",
+  name: "Navigation",
 };
 </script>
 
@@ -17,6 +17,7 @@ header {
   z-index: 99;
   flex-direction: row;
   background-color: #1e2139;
+
   @media (min-width: 900px) {
     min-height: 100%;
     min-width: 90px;
@@ -29,6 +30,7 @@ header {
     background-color: #7c5dfa;
     justify-content: center;
     padding: 24px;
+
     @media (min-width: 900px) {
       width: 100%;
     }
