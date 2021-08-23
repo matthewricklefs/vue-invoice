@@ -192,7 +192,7 @@
           >
             Create Invoice
           </button>
-          <button v-if="editInvoice" type="sumbit" class="purple">
+          <button v-if="editInvoice" type="submit" class="purple">
             Update Invoice
           </button>
         </div>
@@ -265,6 +265,35 @@ export default {
       this.invoiceItemList = this.invoiceItemList.filter(
         (item) => item.id !== id
       );
+    },
+
+    calInvoiceTotal() {
+      this.invoiceTotal = 0;
+
+      this.invoiceItemList.forEach((item) => {
+        this.invoiceTotal += item.total;
+      });
+    },
+
+    publishInvoice() {
+      this.invoicePending = true;
+    },
+
+    saveDraft() {
+      this.invoiceDraft = true;
+    },
+
+    async uploadInvoice() {
+      if (this.invoiceItemList.length <= 0) {
+        alert("Please ensure you have filled out work items");
+        return;
+      }
+
+      this.calInvoiceTotal();
+    },
+
+    submitForm() {
+      this.uploadInvoice();
     },
   },
 
