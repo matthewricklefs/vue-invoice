@@ -4,7 +4,7 @@
     <div class="header flex">
       <div class="left flex flex-column">
         <h1>Invoices</h1>
-        <span>There are {{ invoiceData.length }} total invoices</span>
+        <span>There are {{ invoiceData }} total invoices</span>
       </div>
       <div class="right flex">
         <div @click="toggleFilterMenu" class="filter flex">
@@ -32,6 +32,8 @@
 </template>
 
 <script>
+import { mapMutations } from "vuex";
+
 export default {
   name: "Home",
   data() {
@@ -41,7 +43,11 @@ export default {
   },
   components: {},
   methods: {
-    newInvoice() {},
+    ...mapMutations(["TOGGLE_INVOICE"]),
+
+    newInvoice() {
+      this.TOGGLE_INVOICE();
+    },
 
     toggleFilterMenu() {
       this.filterMenu = !this.filterMenu;
