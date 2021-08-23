@@ -138,7 +138,7 @@
               <th class="item-name">Item Name</th>
               <th class="qty">Qty</th>
               <th class="price">Price</th>
-              <th class="total">Toal</th>
+              <th class="total">Total</th>
             </tr>
             <tr
               class="table-items flex"
@@ -203,6 +203,7 @@
 
 <script>
 import { mapMutations } from "vuex";
+import { uid } from "uid";
 
 export default {
   name: "invoiceModal",
@@ -248,6 +249,22 @@ export default {
 
     closeInvoice() {
       this.TOGGLE_INVOICE();
+    },
+
+    addNewInvoiceItem() {
+      this.invoiceItemList.push({
+        id: uid(),
+        itemName: "",
+        qty: "",
+        price: 0,
+        total: 0,
+      });
+    },
+
+    deleteInvoiceItem(id) {
+      this.invoiceItemList = this.invoiceItemList.filter(
+        (item) => item.id !== id
+      );
     },
   },
 
