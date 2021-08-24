@@ -32,7 +32,7 @@
 
         <button
           v-if="currentInvoice.invoicePending"
-          @click="updateStatusPaid(currentInvoice.docId)"
+          @click="updateStatusToPaid(currentInvoice.docId)"
           class="green"
         >
           Mark as Paid
@@ -124,7 +124,7 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from "vuex";
+import { mapState, mapMutations, mapActions } from "vuex";
 
 export default {
   name: "InvoiceView",
@@ -144,6 +144,12 @@ export default {
       "TOGGLE_EDIT_INVOICE",
     ]),
 
+    ...mapActions([
+      "DELETE_INVOICE",
+      "UPDATE_STATUS_TO_PAID",
+      "UPDATE_STATUS_TO_PENDING",
+    ]),
+
     getCurrentInvoice() {
       this.SET_CURRENT_INVOICE(this.$route.params.invoiceId);
       this.currentInvoice = this.currentInvoiceArray[0];
@@ -153,10 +159,32 @@ export default {
       this.TOGGLE_EDIT_INVOICE();
       this.TOGGLE_INVOICE();
     },
+
+    async deleteInvoice(docId) {
+      await this.DELETE_INVOICE(docId);
+
+      this.$router.push({ name: "Home" });
+    },
+
+    async updateStatusToPaid(docId) {
+      this.UPDATE_STATUS_TO_PAID(docId);
+    },
+
+    async updateStatusToPending(docId) {
+      this.UPDATE_STATUS_TO_PENDING(docId);
+    },
   },
 
   computed: {
-    ...mapState(["currentInvoiceArray"]),
+    ...mapState(["currentInvoiceArray", "editInvoice"]),
+  },
+
+  watch: {
+    editInvoice() {
+      if (!this.editInvoice) {
+        this.currentInvoice = this.currentInvoiceArray[0];
+      }
+    },
   },
 };
 </script>
