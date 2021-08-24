@@ -3,6 +3,7 @@
     <div v-if="!mobile" class="app flex flex-column">
       <Navigation />
       <div class="app-content flex flex-column">
+        <Modal v-if="modalActive" />
         <transition name="invoice">
           <InvoiceModal v-if="invoiceModal" />
         </transition>
@@ -20,10 +21,11 @@
 <script>
 import Navigation from "./components/Navigation.vue";
 import InvoiceModal from "./components/InvoiceModal.vue";
+import Modal from "./components/Modal";
 import { mapState } from "vuex";
 
 export default {
-  components: { Navigation, InvoiceModal },
+  components: { Navigation, InvoiceModal, Modal },
 
   data() {
     return {
@@ -49,7 +51,7 @@ export default {
     },
   },
   computed: {
-    ...mapState(["invoiceModal"]),
+    ...mapState(["invoiceModal", "modalActive"]),
   },
 };
 </script>
@@ -96,7 +98,7 @@ export default {
   transition: 0.8s ease all;
 }
 
-// toggle modal smoothly 
+// toggle modal smoothly
 .invoice-enter-from,
 .invoice-leave-to {
   transform: translateX(-700px);
