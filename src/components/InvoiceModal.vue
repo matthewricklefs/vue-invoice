@@ -202,11 +202,16 @@
 </template>
 
 <script>
+import db from "../firebase/firebaseInit";
+import Loading from "../components/Loading";
 import { mapMutations } from "vuex";
 import { uid } from "uid";
 
 export default {
   name: "invoiceModal",
+  components: {
+    Loading,
+  },
   data() {
     return {
       dateOptions: { year: "numeric", month: "short", day: "numeric" },
@@ -289,7 +294,40 @@ export default {
         return;
       }
 
+      this.loading = true;
+
       this.calInvoiceTotal();
+
+      const dataBase = db.collection("invoices").doc();
+
+      await dataBase.set({
+        invoiceId: uid(6),
+        billerStreetAddress: this.billerStreetAddress,
+        billerCity: this.billerCity,
+        billerZipCode: this.billerZipCode,
+        billerCountry: this.billerCountry,
+        clientName: this.clientName,
+        clientEmail: this.clientEmail,
+        clientStreetAddress: this.clientStreetAddress,
+        clientCity: this.clientCity,
+        clientZipCode: this.clientZipCode,
+        clientCountry: this.clientCountry,
+        invoiceDate: this.invoiceDate,
+        invoiceDateUnix: this.invoiceDateUnix,
+        paymentTerms: this.paymentTerms,
+        paymentDueDate: this.paymentDueDate,
+        paymentDueDateUnix: this.paymentDueDateUnix,
+        productDescription: this.productDescription,
+        invoiceItemList: this.invoiceItemList,
+        invoiceTotal: this.invoiceTotal,
+        invoicePending: this.invoicePending,
+        invoiceDraft: this.invoiceDraft,
+        invoicePaid: null,
+      });
+
+      this.loading = false;
+
+      this.TOGGLE_INVOICE();
     },
 
     submitForm() {
